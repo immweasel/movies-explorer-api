@@ -48,8 +48,8 @@ const login = celebrate({
 
 module.exports = {
   createUser,
+  login,
   updateUser,
   createMovie,
   checkMovieId,
-  login,
 };

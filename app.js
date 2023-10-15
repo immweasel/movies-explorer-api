@@ -1,25 +1,22 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { errors } = require('celebrate');
+const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const cookieParser = require('cookie-parser');
+const { errors } = require('celebrate');
 const router = require('./routes/index');
-const { DATABASE_URL, PORT, message } = require('./utils/constants');
+const { DB_URL, PORT } = require('./utils/constants');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
 const app = express();
 
-mongoose.connect(DATABASE_URL)
-  .then(() => {
-    console.log(message.databaseConnectSuccessful);
-  })
-  .catch((error) => {
-    console.log(`${message.databaseConnectNotSuccessful} - ${error.message}`);
-  });
+mongoose.connect(DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(cors());
 app.use(limiter);
@@ -30,6 +27,7 @@ app.use(requestLogger);
 app.use(router);
 app.use(errorLogger);
 app.use(errors());
+
 app.use(require('./middlewares/globalError'));
 
 app.listen(PORT);

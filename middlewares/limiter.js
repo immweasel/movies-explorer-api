@@ -1,9 +1,9 @@
-const rateLimit = require('express-rate-limit');
+const rateLimiter = require('express-rate-limit');
 const { message } = require('../utils/constants');
 
-const limiter = rateLimit({
-  max: 1000,
-  windowMs: 15 * 60 * 100000,
+const limiter = rateLimiter({
+  max: 100,
+  windowMS: 36000,
   message: message.limitRateInfo,
 });
 

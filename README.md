@@ -1,5 +1,7 @@
 # movies-explorer-api
 
-Адрес репозитория: https://github.com/immweasel/movies-explorer-api
+IP 51.250.23.211
 
-Backend https://api.immweasel.diploma.nomoredomainsrocks.ru
+* Адрес репозитория -> https://github.com/immweasel/movies-explorer-api
+
+* Сайт -> https://api.immweasel.diploma.nomoredomainsrocks.ru

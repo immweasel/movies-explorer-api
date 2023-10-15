@@ -29,7 +29,6 @@ const movieSchema = new mongoose.Schema({
       validator(url) {
         return urlRegex.test(url);
       },
-      message: 'Введен неверный URL',
     },
   },
   trailerLink: {
@@ -39,7 +38,6 @@ const movieSchema = new mongoose.Schema({
       validator(url) {
         return urlRegex.test(url);
       },
-      message: 'Введен неверный URL',
     },
   },
   thumbnail: {
@@ -49,25 +47,24 @@ const movieSchema = new mongoose.Schema({
       validator(url) {
         return urlRegex.test(url);
       },
-      message: 'Введен неверный URL',
     },
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
     ref: 'user',
+    required: [true, 'Поле "owner" должно быть заполнено'],
   },
   movieId: {
     type: Number,
-    required: true,
+    required: [true, 'Поле "movieId" должно быть заполнено'],
   },
   nameRU: {
     type: String,
-    required: true,
+    required: [true, 'Поле "nameRU" должно быть заполнено'],
   },
   nameEN: {
     type: String,
-    required: true,
+    required: [true, 'Поле "nameEn" должно быть заполнено'],
   },
 }, { versionKey: false });
 

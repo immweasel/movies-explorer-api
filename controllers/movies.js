@@ -5,49 +5,59 @@ const BadRequestError = require('../errors/BadRequestError');
 
 const { statusCode, message } = require('../utils/constants');
 
-module.exports.createMovie = (req, res, next) => {
+const createMovie = (req, res, next) => {
   const {
     country,
     director,
-    duretion,
+    duration,
     year,
     description,
     image,
     trailerLink,
-    thumbnail,
-    movieId,
     nameRU,
     nameEN,
+    thumbnail,
+    movieId,
   } = req.body;
-
   Movie.create({
     country,
     director,
-    duretion,
+    duration,
     year,
     description,
     image,
     trailerLink,
-    thumbnail,
-    movieId,
     nameRU,
     nameEN,
+    thumbnail,
+    movieId,
     owner: req.user._id,
   })
+
     .then((movie) => {
       res.status(statusCode.successCreate).send(movie);
     })
-    .catch((error) => {
-      if (error.name === 'ValidationError') {
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
         return next(new BadRequestError(message.updateUserError));
       }
-      return next(error);
+      return next(err);
     });
 };
 
-module.exports.deleteMovie = (req, res, next) => {
-  const { movieId } = req.params;
+const getMovies = (req, res, next) => {
+  const owner = req.user._id;
+  Movie.find({ owner })
+    .then((movies) => {
+      res.send({ movies });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
 
+const deleteMovie = (req, res, next) => {
+  const { movieId } = req.params;
   Movie.findById(movieId)
     .then((movie) => {
       if (!movie) {
@@ -58,25 +68,19 @@ module.exports.deleteMovie = (req, res, next) => {
           .then(() => {
             res.send({ message: message.removeSuccessful });
           })
-          .catch((error) => {
-            next(error);
+          .catch((err) => {
+            next(err);
           });
       }
       return Promise.reject(new ForbiddenError(message.updateUserError));
     })
-    .catch((error) => {
-      next(error);
+    .catch((err) => {
+      next(err);
     });
 };
 
-module.exports.getMovie = (req, res, next) => {
-  const owner = req.user._id;
-
-  Movie.find({ owner })
-    .then((movie) => {
-      res.send({ movie });
-    })
-    .catch((error) => {
-      next(error);
-    });
+module.exports = {
+  createMovie,
+  getMovies,
+  deleteMovie,
 };
