@@ -12,13 +12,13 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
 const app = express();
+app.use(cors());
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-app.use(cors());
 app.use(limiter);
 app.use(helmet());
 app.use(bodyParser.json());
