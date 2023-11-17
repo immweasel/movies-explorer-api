@@ -12,7 +12,11 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000',
+  exposedHeaders: ['set-cookie'],
+}));
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
