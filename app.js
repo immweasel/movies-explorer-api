@@ -1,10 +1,10 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const cookieParser = require('cookie-parser');
 const { errors } = require('celebrate');
 const router = require('./routes/index');
 const { DB_URL, PORT } = require('./utils/constants');
@@ -12,11 +12,17 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const limiter = require('./middlewares/limiter');
 
 const app = express();
-app.use(cors({
+const corsOptions = {
+  origin: [
+    'http://localhost',
+    'https://immweasel.diploma.nomoredomainsrocks.ru',
+    'http://immweasel.diploma.nomoredomainsrocks.ru',
+  ],
   credentials: true,
-  origin: 'http://localhost:3000',
-  exposedHeaders: ['set-cookie'],
-}));
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 mongoose.connect(DB_URL, {
   useNewUrlParser: true,
